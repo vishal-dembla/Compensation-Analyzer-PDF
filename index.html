@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Executive Compensation Analyzer</title>
+    <title>Executive Compensation Analyzer (Fixed)</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -28,8 +28,6 @@
             margin: 0;
             padding: 2rem;
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
@@ -48,22 +46,11 @@
             margin-bottom: 0.5rem;
         }
 
-        h2 {
-            font-size: 1.75rem;
-            font-weight: 700;
-        }
-
-        p {
-            color: var(--text-secondary);
-            font-size: 1.125rem;
-        }
-
         .card {
             background-color: var(--card-bg);
             border-radius: 1rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             padding: 2rem;
-            transition: all 0.3s ease-in-out;
             margin-bottom: 2rem;
         }
 
@@ -81,31 +68,6 @@
             background-color: #eff6ff;
         }
 
-        .upload-icon {
-            width: 3rem;
-            height: 3rem;
-            color: #9ca3af;
-            margin: 0 auto 1rem;
-        }
-
-        #upload-prompt {
-            font-size: 1.125rem;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .upload-hint {
-            font-size: 0.875rem;
-            color: #6b7280;
-            display: block;
-            margin-top: 0.25rem;
-        }
-
-        .actions {
-            margin-top: 1.5rem;
-            text-align: center;
-        }
-
         button {
             font-family: 'Inter', sans-serif;
             background-color: var(--brand-color);
@@ -115,7 +77,7 @@
             border: none;
             border-radius: 0.5rem;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: background-color 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
@@ -128,32 +90,6 @@
         button:disabled {
             background-color: #9ca3af;
             cursor: not-allowed;
-        }
-
-        .btn-green { background-color: var(--green-color); }
-        .btn-green:hover { background-color: #15803d; }
-        .btn-purple { background-color: var(--purple-color); }
-        .btn-purple:hover { background-color: #7e22ce; }
-        .btn-orange { background-color: var(--orange-color); }
-        .btn-orange:hover { background-color: #c2410c; }
-
-        .loader {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            color: var(--brand-color);
-            font-weight: 500;
-            font-size: 1.125rem;
-        }
-
-        .spin {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
 
         .hidden {
@@ -180,36 +116,39 @@
             color: var(--orange-color);
         }
 
-        #results-section {
+        .loader {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            color: var(--brand-color);
+            font-weight: 500;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: var(--border-color);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--brand-color);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .results-section {
             animation: fadeIn 0.5s ease-in-out;
         }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .results-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .results-header h2 { margin: 0; }
-        .source-file { margin: 0; font-size: 0.875rem; }
-
-        .results-actions { 
-            display: flex; 
-            gap: 0.5rem; 
-            flex-wrap: wrap; 
-        }
-
-        .results-actions button { 
-            padding: 0.5rem 1rem; 
-            font-size: 0.875rem; 
         }
 
         .summary-cards {
@@ -240,27 +179,20 @@
             color: var(--text-primary);
         }
 
-        .table-container {
-            overflow-x: auto;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
-            text-align: left;
+            margin-top: 1rem;
         }
 
         th, td {
             padding: 0.75rem 1rem;
             border-bottom: 1px solid var(--border-color);
-            white-space: nowrap;
-        }
-
-        thead {
-            background-color: #f9fafb;
+            text-align: left;
         }
 
         th {
+            background-color: #f9fafb;
             font-weight: 600;
             font-size: 0.75rem;
             text-transform: uppercase;
@@ -270,32 +202,6 @@
 
         tbody tr:hover {
             background-color: #f9fafb;
-        }
-
-        td:last-child, th:last-child, th:nth-last-child(2), td:nth-last-child(2) {
-            text-align: right;
-        }
-
-        td.total-comp {
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .results-footer {
-            text-align: center;
-            margin-top: 2rem;
-        }
-
-        .reset-button {
-            background: none;
-            border: none;
-            color: var(--brand-color);
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .reset-button:hover {
-            text-decoration: underline;
         }
 
         .debug-section {
@@ -309,27 +215,14 @@
             overflow-y: auto;
         }
 
-        .debug-section h4 {
-            margin: 0 0 0.5rem 0;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
+        .actions {
+            margin-top: 1.5rem;
+            text-align: center;
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background-color: var(--border-color);
-            border-radius: 2px;
-            overflow: hidden;
-            margin: 1rem 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background-color: var(--brand-color);
-            transition: width 0.3s ease;
-            width: 0%;
-        }
+        .btn-green { background-color: var(--green-color); }
+        .btn-purple { background-color: var(--purple-color); }
+        .btn-orange { background-color: var(--orange-color); }
     </style>
 </head>
 <body>
@@ -343,10 +236,10 @@
             <!-- Upload Section -->
             <div id="upload-section" class="card">
                 <div id="upload-area" class="upload-area">
-                    <div class="upload-icon">📄</div>
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📄</div>
                     <p id="upload-prompt">Drop PDF here or click to upload</p>
-                    <span class="upload-hint">Supports PDF files up to 10MB</span>
-                    <input type="file" id="file-input" accept=".pdf" hidden>
+                    <span style="font-size: 0.875rem; color: #6b7280;">Supports PDF files up to 10MB</span>
+                    <input type="file" id="file-input" accept=".pdf,application/pdf" hidden>
                 </div>
 
                 <div id="error-message" class="error-message hidden">
@@ -361,11 +254,11 @@
 
                 <div class="actions">
                     <div id="loader" class="loader hidden">
-                        <div class="spin">⏳</div>
+                        <div style="animation: spin 1s linear infinite;">⏳</div>
                         <span id="loader-text">Processing PDF...</span>
                     </div>
                     <div id="progress-container" class="hidden">
-                        <div id="progress-bar">
+                        <div class="progress-bar">
                             <div id="progress-fill" class="progress-fill"></div>
                         </div>
                         <p id="progress-text">Extracting text from PDF...</p>
@@ -378,28 +271,24 @@
             </div>
 
             <!-- Results Section -->
-            <div id="results-section" class="card hidden">
-                <div class="results-header">
+            <div id="results-section" class="card hidden results-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                     <div>
-                        <h2>Analysis Results</h2>
-                        <p class="source-file" id="source-file-name"></p>
+                        <h2 style="margin: 0; font-size: 1.75rem;">Analysis Results</h2>
+                        <p style="margin: 0; font-size: 0.875rem;" id="source-file-name"></p>
                     </div>
-                    <div class="results-actions">
+                    <div style="display: flex; gap: 0.5rem;">
                         <button id="copy-btn">
                             <span>📋</span>
                             <span id="copy-btn-text">Copy</span>
                         </button>
-                        <button id="download-txt-btn" class="btn-green">
+                        <button id="download-btn" class="btn-green">
                             <span>📄</span>
-                            Report (.txt)
-                        </button>
-                        <button id="download-json-btn" class="btn-purple">
-                            <span>📊</span>
-                            Data (.json)
+                            Report
                         </button>
                         <button id="show-debug-btn" class="btn-orange">
                             <span>🔍</span>
-                            Show Debug
+                            Debug
                         </button>
                     </div>
                 </div>
@@ -419,7 +308,7 @@
                     </div>
                 </div>
 
-                <div class="table-container">
+                <div style="overflow-x: auto;">
                     <table>
                         <thead>
                             <tr>
@@ -436,25 +325,31 @@
                 </div>
 
                 <div id="debug-section" class="debug-section hidden">
-                    <h4>Debug Information</h4>
+                    <h4 style="margin: 0 0 0.5rem 0; font-family: 'Inter', sans-serif;">Debug Information</h4>
                     <div id="debug-content"></div>
                 </div>
 
-                <div class="results-footer">
-                    <button id="reset-btn" class="reset-button">Analyze another document</button>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button id="reset-btn" style="background: none; border: none; color: var(--brand-color); font-weight: 600; cursor: pointer;">
+                        Analyze another document
+                    </button>
                 </div>
             </div>
         </main>
     </div>
 
     <!-- PDF.js Library -->
-    <script src="/scripts/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
     <script>
-        // Configure PDF.js worker
-        pdfjsLib.GlobalWorkerOptions.workerSrc = '/scripts/pdf.worker.min.js';
+        // Enhanced PDF.js configuration with fallback
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('Executive Compensation Analyzer loaded');
+            
             // State variables
             let currentFile = null;
             let compensationData = [];
@@ -481,8 +376,7 @@
             const resetBtn = document.getElementById('reset-btn');
             const copyBtn = document.getElementById('copy-btn');
             const copyBtnText = document.getElementById('copy-btn-text');
-            const downloadTxtBtn = document.getElementById('download-txt-btn');
-            const downloadJsonBtn = document.getElementById('download-json-btn');
+            const downloadBtn = document.getElementById('download-btn');
             const showDebugBtn = document.getElementById('show-debug-btn');
             const debugSection = document.getElementById('debug-section');
             const debugContent = document.getElementById('debug-content');
@@ -491,7 +385,7 @@
             uploadArea.addEventListener('click', () => fileInput.click());
             fileInput.addEventListener('change', (e) => handleFileSelect(e.target.files[0]));
             
-            // Drag and drop
+            // Enhanced drag and drop
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
                 uploadArea.addEventListener(eventName, preventDefaults, false);
                 document.body.addEventListener(eventName, preventDefaults, false);
@@ -505,13 +399,17 @@
                 uploadArea.addEventListener(eventName, () => uploadArea.classList.remove('active'), false);
             });
 
-            uploadArea.addEventListener('drop', (e) => handleFileSelect(e.dataTransfer.files[0]), false);
+            uploadArea.addEventListener('drop', (e) => {
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileSelect(files[0]);
+                }
+            }, false);
 
             analyzeBtn.addEventListener('click', analyzeCompensation);
             resetBtn.addEventListener('click', resetUI);
             copyBtn.addEventListener('click', copyResults);
-            downloadTxtBtn.addEventListener('click', () => downloadReport('txt'));
-            downloadJsonBtn.addEventListener('click', () => downloadReport('json'));
+            downloadBtn.addEventListener('click', downloadReport);
             showDebugBtn.addEventListener('click', toggleDebug);
 
             function preventDefaults(e) {
@@ -520,20 +418,37 @@
             }
 
             function handleFileSelect(file) {
-                if (file && file.type === 'application/pdf') {
-                    if (file.size > 10 * 1024 * 1024) { // 10MB limit
-                        showError("File size too large. Please upload a PDF smaller than 10MB.");
-                        return;
-                    }
-                    currentFile = file;
-                    uploadPrompt.textContent = `Selected: ${currentFile.name}`;
-                    analyzeBtn.disabled = false;
-                    hideMessages();
-                } else {
+                console.log('File selected:', file);
+                
+                if (!file) {
+                    showError("No file selected.");
+                    return;
+                }
+
+                // Enhanced file validation
+                const validTypes = ['application/pdf'];
+                const validExtensions = ['.pdf'];
+                const fileName = file.name.toLowerCase();
+                
+                const hasValidType = validTypes.includes(file.type);
+                const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
+                
+                if (!hasValidType && !hasValidExtension) {
                     showError("Please upload a valid PDF file.");
                     currentFile = null;
                     analyzeBtn.disabled = true;
+                    return;
                 }
+
+                if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                    showError("File size too large. Please upload a PDF smaller than 10MB.");
+                    return;
+                }
+
+                currentFile = file;
+                uploadPrompt.textContent = `Selected: ${currentFile.name}`;
+                analyzeBtn.disabled = false;
+                hideMessages();
             }
 
             function showError(message) {
@@ -561,11 +476,17 @@
             async function analyzeCompensation() {
                 if (!currentFile || isProcessing) return;
 
+                console.log('Starting analysis...');
                 isProcessing = true;
                 debugInfo = [];
                 updateProcessingUI(true);
 
                 try {
+                    // Check if PDF.js is available
+                    if (typeof pdfjsLib === 'undefined') {
+                        throw new Error("PDF.js library failed to load. Please refresh the page and try again.");
+                    }
+
                     // Step 1: Extract text from PDF
                     loaderText.textContent = 'Extracting text from PDF...';
                     updateProgress(10, 'Loading PDF...');
@@ -573,7 +494,7 @@
                     const text = await extractTextFromPDF(currentFile);
                     extractedText = text;
                     
-                    if (!text || text.trim().length < 100) {
+                    if (!text || text.trim().length < 50) {
                         throw new Error("Could not extract sufficient text from PDF. The document might be image-based or corrupted.");
                     }
 
@@ -608,176 +529,209 @@
             }
 
             async function extractTextFromPDF(file) {
-                const arrayBuffer = await file.arrayBuffer();
-                const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
-                let fullText = '';
-
-                updateProgress(20, `Processing ${pdf.numPages} pages...`);
-
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const textContent = await page.getTextContent();
-                    const pageText = textContent.items.map(item => item.str).join(' ');
-                    fullText += pageText + '\n';
+                try {
+                    console.log('Extracting text from PDF...');
+                    const arrayBuffer = await file.arrayBuffer();
                     
-                    updateProgress(20 + (i / pdf.numPages) * 30, `Processed page ${i} of ${pdf.numPages}`);
-                }
+                    // Enhanced PDF loading with error handling
+                    const loadingTask = pdfjsLib.getDocument({
+                        data: arrayBuffer,
+                        verbosity: 0
+                    });
+                    
+                    const pdf = await loadingTask.promise;
+                    let fullText = '';
 
-                return fullText;
+                    updateProgress(20, `Processing ${pdf.numPages} pages...`);
+
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        try {
+                            const page = await pdf.getPage(i);
+                            const textContent = await page.getTextContent();
+                            
+                            // Enhanced text extraction with positioning
+                            const pageText = textContent.items.map(item => {
+                                if (item.str && item.str.trim()) {
+                                    return item.str;
+                                }
+                                return '';
+                            }).join(' ');
+                            
+                            fullText += pageText + '\n';
+                            
+                            updateProgress(20 + (i / pdf.numPages) * 30, `Processed page ${i} of ${pdf.numPages}`);
+                        } catch (pageError) {
+                            console.warn(`Error processing page ${i}:`, pageError);
+                            debugInfo.push(`Warning: Could not process page ${i}`);
+                        }
+                    }
+
+                    console.log('Text extraction complete, length:', fullText.length);
+                    return fullText;
+                } catch (error) {
+                    console.error('PDF extraction error:', error);
+                    throw new Error(`Failed to extract text from PDF: ${error.message}`);
+                }
             }
 
             function parseCompensationData(text) {
                 const executives = [];
-                debugInfo.push("Starting compensation data parsing...");
+                debugInfo.push("Starting enhanced compensation data parsing...");
 
-                // Common executive titles
+                // Enhanced executive titles patterns
                 const titlePatterns = [
                     /Chief Executive Officer|CEO/gi,
                     /Chief Financial Officer|CFO/gi,
                     /Chief Operating Officer|COO/gi,
                     /Chief Technology Officer|CTO/gi,
+                    /Chief Information Officer|CIO/gi,
+                    /Chief Marketing Officer|CMO/gi,
+                    /Chief Human Resources Officer|CHRO/gi,
                     /President/gi,
                     /Senior Vice President|SVP/gi,
                     /Vice President|VP/gi,
                     /General Counsel/gi,
                     /Chief.*Officer/gi,
-                    /Director/gi // Added Director
+                    /Executive Vice President|EVP/gi,
+                    /Managing Director/gi,
+                    /Director/gi,
+                    /Chairman/gi,
+                    /Executive/gi
                 ];
 
-                // Split text into lines and look for compensation tables
-                const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                // Enhanced compensation keywords
+                const compensationKeywords = [
+                    'executive compensation', 'compensation table', 'summary compensation table',
+                    'total compensation', 'director compensation', 'named executive officers',
+                    'compensation discussion', 'executive pay', 'salary', 'bonus', 'stock awards',
+                    'option awards', 'incentive plan', 'annual compensation', 'remuneration',
+                    'compensation committee', 'proxy statement compensation'
+                ];
+
+                // Split text into paragraphs and sentences for better parsing
+                const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 10);
+                const sentences = text.split(/[.!?;]/).filter(s => s.trim().length > 20);
+
+                // Enhanced name patterns
+                const namePatterns = [
+                    /\b([A-Z][a-z]{2,}\s+[A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,})?)\b/g,
+                    /\b([A-Z]\.\s*[A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,})?)\b/g,
+                    /\b([A-Z][a-z]{2,}\s+[A-Z]\.\s*[A-Z][a-z]{2,})\b/g
+                ];
+
+                // Enhanced money patterns
+                const moneyPatterns = [
+                    /\$\s*([\d,]+(?:\.\d{2})?)/g,
+                    /\$\s*([\d,]+)/g,
+                    /\b([\d,]+)\s*(?:dollars?|USD|\$)/gi
+                ];
+
+                // Look for compensation sections
+                let compensationSections = [];
                 
-                // Look for compensation table headers or relevant sections
-                const compensationKeywords = ['compensation', 'salary', 'total compensation', 'executive compensation', 'summary compensation', 'Director Compensation', 'Director Remuneration'];
-                let inCompensationSection = false;
-                let compensationLines = [];
-
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i].toLowerCase();
-                    
-                    // Check if we're entering a compensation section
-                    if (compensationKeywords.some(keyword => line.includes(keyword))) {
-                        inCompensationSection = true;
-                        debugInfo.push(`Found compensation section at line ${i}: ${lines[i]}`);
-                        continue;
+                for (const paragraph of paragraphs) {
+                    const lowerParagraph = paragraph.toLowerCase();
+                    if (compensationKeywords.some(keyword => lowerParagraph.includes(keyword))) {
+                        compensationSections.push(paragraph);
+                        debugInfo.push(`Found compensation section: ${paragraph.substring(0, 100)}...`);
                     }
+                }
 
-                    // If we're in a compensation section, collect relevant lines
-                    if (inCompensationSection) {
-                        // Stop if we hit a new section or table
-                        if (line.includes('note') && line.includes(':') || 
-                            line.includes('table') || 
-                            line.length > 200 ||
-                            line.includes('election of directors') || // Stop at new sections
-                            line.includes('shareholder proposal')) {
-                            inCompensationSection = false;
+                // If no specific sections found, search in all text
+                if (compensationSections.length === 0) {
+                    compensationSections = paragraphs;
+                    debugInfo.push("No specific compensation sections found, searching entire document");
+                }
+
+                // Parse each compensation section
+                for (const section of compensationSections) {
+                    const sectionLines = section.split('\n').filter(line => line.trim().length > 5);
+                    
+                    for (const line of sectionLines) {
+                        // Skip obvious header lines
+                        if (line.toLowerCase().includes('table') || 
+                            line.toLowerCase().includes('page') ||
+                            line.toLowerCase().match(/^\s*\d+\s*$/)) {
                             continue;
                         }
-                        
-                        compensationLines.push(lines[i]);
-                    }
-                }
 
-                debugInfo.push(`Collected ${compensationLines.length} lines from compensation sections`);
-
-                // Parse individual executive data
-                const namePattern = /([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/g;
-                const moneyPattern = /\$?([\d,]+(?:\.\d{2})?)/g;
-
-                for (const line of compensationLines) {
-                    // Skip header lines
-                    if (line.toLowerCase().includes('name') && line.toLowerCase().includes('salary')) {
-                        continue;
-                    }
-
-                    const names = [...line.matchAll(namePattern)];
-                    const amounts = [...line.matchAll(moneyPattern)];
-
-                    if (names.length > 0 && amounts.length >= 1) { // Modified to check for at least 1 amount
-                        const name = names[0][1];
-                        
-                        // Find title
-                        let title = 'Director'; // Default title
-                        for (const pattern of titlePatterns) {
-                            const titleMatch = line.match(pattern);
-                            if (titleMatch) {
-                                title = titleMatch[0];
-                                break;
-                            }
-                        }
-
-                        // Parse monetary amounts
-                        const monetaryAmounts = amounts.map(match => {
-                            const cleanAmount = match[1].replace(/,/g, '');
-                            return parseInt(cleanAmount) || 0;
-                        }).filter(amount => amount > 0);
-
-                        if (monetaryAmounts.length >= 1) { // Use only Fees Earned
-                            const totalCompensation = monetaryAmounts[0];
-
-                            // Only add if amounts seem reasonable (> $1k)
-                            if (totalCompensation > 1000) {
-                                executives.push({
-                                    name,
-                                    title,
-                                    baseSalary: 0,
-                                    stockOptions: 0,
-                                    totalCompensation
-                                });
-
-                                debugInfo.push(`Parsed: ${name} - ${title} - Total: $${totalCompensation.toLocaleString()}`);
-                            }
-                        }
-                    }
-                }
-
-                // If no structured data found, try alternative parsing
-                if (executives.length === 0) {
-                    debugInfo.push("No structured compensation data found, trying alternative parsing...");
-                    
-                    // Look for any lines with names and dollar amounts
-                    const allText = compensationLines.join(' ');
-                    const sentences = allText.split(/[.!?]/).filter(s => s.trim().length > 20);
-                    
-                    for (const sentence of sentences) {
-                        const names = [...sentence.matchAll(namePattern)];
-                        const amounts = [...sentence.matchAll(/\$[\d,]+/g)];
-                        
-                        if (names.length > 0 && amounts.length > 0) {
-                            const name = names[0][1];
-                            const amount = parseInt(amounts[amounts.length - 1][0].replace(/[$,]/g, ''));
+                        // Try different name patterns
+                        for (const namePattern of namePatterns) {
+                            const nameMatches = [...line.matchAll(namePattern)];
                             
-                            if (amount > 100000) { // Reasonable executive compensation
+                            if (nameMatches.length > 0) {
+                                const name = nameMatches[0][1].trim();
+                                
+                                // Skip common false positives
+                                if (name.toLowerCase().includes('committee') ||
+                                    name.toLowerCase().includes('company') ||
+                                    name.toLowerCase().includes('corporation') ||
+                                    name.toLowerCase().includes('table') ||
+                                    name.toLowerCase().includes('total') ||
+                                    name.toLowerCase().includes('year') ||
+                                    name.toLowerCase().includes('fiscal') ||
+                                    name.length < 6) {
+                                    continue;
+                                }
+
+                                // Find title
                                 let title = 'Executive';
                                 for (const pattern of titlePatterns) {
-                                    const titleMatch = sentence.match(pattern);
+                                    const titleMatch = line.match(pattern);
                                     if (titleMatch) {
                                         title = titleMatch[0];
                                         break;
                                     }
                                 }
+
+                                // Enhanced money extraction
+                                let amounts = [];
+                                for (const moneyPattern of moneyPatterns) {
+                                    const moneyMatches = [...line.matchAll(moneyPattern)];
+                                    amounts.push(...moneyMatches.map(match => {
+                                        const cleanAmount = match[1].replace(/[,$]/g, '');
+                                        return parseInt(cleanAmount) || 0;
+                                    }));
+                                }
+
+                                // Filter and validate amounts
+                                amounts = amounts.filter(amount => amount > 5000 && amount < 100000000);
                                 
-                                executives.push({
-                                    name,
-                                    title,
-                                    baseSalary: Math.floor(amount * 0.3), // Estimate
-                                    stockOptions: Math.floor(amount * 0.4), // Estimate
-                                    totalCompensation: amount
-                                });
-                                
-                                debugInfo.push(`Alternative parsing: ${name} - ${title} - $${amount.toLocaleString()}`);
+                                if (amounts.length > 0) {
+                                    const totalCompensation = Math.max(...amounts);
+                                    
+                                    // Check if this executive already exists
+                                    const existingIndex = executives.findIndex(exec => 
+                                        exec.name.toLowerCase() === name.toLowerCase()
+                                    );
+                                    
+                                    if (existingIndex === -1) {
+                                        executives.push({
+                                            name,
+                                            title,
+                                            baseSalary: amounts.length > 1 ? amounts[0] : Math.floor(totalCompensation * 0.6),
+                                            stockOptions: amounts.length > 2 ? amounts[1] : Math.floor(totalCompensation * 0.25),
+                                            totalCompensation
+                                        });
+
+                                        debugInfo.push(`Parsed: ${name} - ${title} - Total: $${totalCompensation.toLocaleString()}`);
+                                    } else {
+                                        // Update existing executive if new total is higher
+                                        if (totalCompensation > executives[existingIndex].totalCompensation) {
+                                            executives[existingIndex].totalCompensation = totalCompensation;
+                                            executives[existingIndex].baseSalary = amounts.length > 1 ? amounts[0] : Math.floor(totalCompensation * 0.6);
+                                            executives[existingIndex].stockOptions = amounts.length > 2 ? amounts[1] : Math.floor(totalCompensation * 0.25);
+                                            debugInfo.push(`Updated: ${name} - New total: $${totalCompensation.toLocaleString()}`);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
 
-                // Remove duplicates based on name
-                const uniqueExecutives = executives.filter((exec, index, self) => 
-                    index === self.findIndex(e => e.name === exec.name)
-                );
-
-                debugInfo.push(`Final result: ${uniqueExecutives.length} unique executives found`);
-                return uniqueExecutives;
+                debugInfo.push(`Final result: ${executives.length} executives found`);
+                return executives;
             }
 
             function updateProcessingUI(processing) {
@@ -818,11 +772,10 @@
                             <td>${exec.title}</td>
                             <td>${formatCurrency(exec.baseSalary)}</td>
                             <td>${formatCurrency(exec.stockOptions)}</td>
-                            <td class="total-comp">${formatCurrency(exec.totalCompensation)}</td>
+                            <td style="font-weight: 700;">${formatCurrency(exec.totalCompensation)}</td>
                         `;
                     });
                 } else {
-                    // Show empty state
                     document.getElementById('summary-executives-count').textContent = '0';
                     document.getElementById('summary-average-comp').textContent = '$0';
                     document.getElementById('summary-highest-earner').textContent = 'None found';
@@ -831,7 +784,6 @@
                     tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #6b7280;">No compensation data found in this document</td></tr>';
                 }
 
-                // Update debug content
                 debugContent.innerHTML = debugInfo.map(info => `<div>${info}</div>`).join('');
             }
 
@@ -884,7 +836,7 @@
                 });
             }
 
-            function generateReportText() {
+            function downloadReport() {
                 let report = `EXECUTIVE COMPENSATION ANALYSIS\n`;
                 report += `Source: ${currentFile.name}\n`;
                 report += `Analysis Date: ${new Date().toLocaleDateString()}\n`;
@@ -904,53 +856,25 @@
                     compensationData.forEach((exec, index) => {
                         report += `${index + 1}. ${exec.name}\n`;
                         report += `   Title: ${exec.title}\n`;
-                        report += `   Base Salary: ${formatCurrency(exec.baseSalary)}n`;
+                        report += `   Base Salary: ${formatCurrency(exec.baseSalary)}\n`;
                         report += `   Stock Awards: ${formatCurrency(exec.stockOptions)}\n`;
                         report += `   Total Compensation: ${formatCurrency(exec.totalCompensation)}\n\n`;
                     });
                 } else {
                     report += 'No executive compensation data was found in this document.\n';
-                    report += 'This may indicate:\n';
-                    report += '- The document is not an annual report with compensation tables\n';
-                    report += '- The compensation data is in a format not recognized by the parser\n';
-                    report += '- The document is image-based and text extraction failed\n\n';
                 }
 
-                report += `DEBUG INFORMATION:\n`;
+                report += `\nDEBUG INFORMATION:\n`;
                 report += '-'.repeat(30) + '\n';
                 debugInfo.forEach(info => {
                     report += `${info}\n`;
                 });
 
-                return report;
-            }
-
-            function downloadReport(format) {
-                let content, mimeType, filename;
-
-                if (format === 'txt') {
-                    content = generateReportText();
-                    mimeType = 'text/plain';
-                    filename = `Executive-Compensation-Report-${currentFile.name.replace('.pdf', '')}.txt`;
-                } else {
-                    const reportData = {
-                        sourceFile: currentFile.name,
-                        analysisDate: new Date().toISOString(),
-                        executiveCount: compensationData.length,
-                        compensationData: compensationData,
-                        debugInfo: debugInfo,
-                        extractedTextLength: extractedText.length
-                    };
-                    content = JSON.stringify(reportData, null, 2);
-                    mimeType = 'application/json';
-                    filename = `Executive-Compensation-Data-${currentFile.name.replace('.pdf', '')}.json`;
-                }
-
-                const blob = new Blob([content], { type: mimeType });
+                const blob = new Blob([report], { type: 'text/plain' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = filename;
+                a.download = `Executive-Compensation-Report-${currentFile.name.replace('.pdf', '')}.txt`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -963,9 +887,19 @@
                     showDebugBtn.innerHTML = '<span>🔍</span> Hide Debug';
                 } else {
                     debugSection.classList.add('hidden');
-                    showDebugBtn.innerHTML = '<span>🔍</span> Show Debug';
+                    showDebugBtn.innerHTML = '<span>🔍</span> Debug';
                 }
             }
+
+            // Add spinner animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes spin {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
         });
     </script>
 </body>
